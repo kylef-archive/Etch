@@ -1,4 +1,5 @@
 import PathKit
+import Stencil
 
 
 public typealias Metadata = [String: Any]
@@ -13,9 +14,11 @@ public protocol ReaderType {
 
 
 public class Reader : ReaderType {
+  let source: Path
   let readers: [ReaderType]
 
-  init(readers: [ReaderType]) {
+  init(source: Path, readers: [ReaderType]) {
+    self.source = source
     self.readers = readers
   }
 
@@ -25,7 +28,7 @@ public class Reader : ReaderType {
 
   func findReader(path: Path) -> ReaderType? {
     for reader in readers {
-      if reader.canRead(path) {
+      if reader.canRead(source + path) {
         return reader
       }
     }
@@ -34,10 +37,14 @@ public class Reader : ReaderType {
   }
 
   public func read(path: Path) throws -> (Metadata, String) {
-    if let reader = findReader(path) {
-      return try reader.read(path)
+    if let reader = findReader(source + path) {
+      return try reader.read(source + path)
     }
 
     fatalError()  // TODO Throw an error
+  }
+
+  public func template(path: Path) throws -> Template {
+    return try Template(path: source + path)
   }
 }

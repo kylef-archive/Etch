@@ -9,12 +9,12 @@ public protocol WriterType {
 
 
 class Writer : WriterType {
-  let theme: Path
+  let templates: Path
   let destination: Path
   let context: Context
 
-  init(theme: Path, destination: Path, context: Context) {
-    self.theme = theme
+  init(templates: Path, destination: Path, context: Context) {
+    self.templates = templates
     self.destination = destination
     self.context = context
   }
@@ -26,7 +26,7 @@ class Writer : WriterType {
   }
 
   func render(template: String, filename: Path, context: [String: Any]? = nil) throws {
-    let template = try Template(path: theme + template)
+    let template = try Template(path: templates + template)
 
     let content: String = try self.context.push(context) {
       try template.render(self.context)
