@@ -1,5 +1,6 @@
 public protocol ContextType {
   func addGenerator(generator: GeneratorType)
+  subscript(key: String) -> Any? { get set }
 }
 
 class ProcessorContext : ContextType {
@@ -13,6 +14,16 @@ class ProcessorContext : ContextType {
 
   func addGenerator(generator: GeneratorType) {
     generators.append(generator)
+  }
+
+  subscript(key: String) -> Any? {
+    get {
+      return context[key]
+    }
+
+    set(value) {
+      context[key] = value
+    }
   }
 }
 
