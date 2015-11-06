@@ -5,6 +5,16 @@ public protocol GeneratorType {
 }
 
 
+public protocol GeneratorBuilderType : GeneratorType {
+  typealias Builder: GeneratorBuilder
+  init(builder: Builder)
+}
+
+public protocol GeneratorBuilder {
+  init()
+}
+
+
 class AnonymousGenerator : GeneratorType {
   let generator: WriterType throws -> ()
 

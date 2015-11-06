@@ -40,4 +40,11 @@ public class EtchBuilder {
   public func addGenerator(generator: WriterType throws -> ()) {
     addGenerator(AnonymousGenerator(generator))
   }
+
+  /// Add a generator using the builder pattern
+  public func addGenerator<T: GeneratorBuilderType>(generator: T.Type, closure: T.Builder -> ()) {
+    let builder = T.Builder()
+    closure(builder)
+    addGenerator(T(builder: builder))
+  }
 }
