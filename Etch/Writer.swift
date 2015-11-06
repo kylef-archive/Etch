@@ -4,7 +4,7 @@ import Stencil
 
 public protocol WriterType {
   func write(filename: Path, content: String) throws
-  func render(template: String, filename: Path, context: [String: Any]) throws
+  func render(template: String, filename: Path, context: [String: Any]?) throws
 }
 
 
@@ -25,7 +25,7 @@ class Writer : WriterType {
     try output.write(content)
   }
 
-  func render(template: String, filename: Path, context: [String: Any]) throws {
+  func render(template: String, filename: Path, context: [String: Any]? = nil) throws {
     let template = try Template(path: theme + template)
 
     let content: String = try self.context.push(context) {
